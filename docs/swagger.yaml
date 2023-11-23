@@ -1,0 +1,762 @@
+definitions:
+  customer.CreateRequest:
+    properties:
+      name:
+        type: string
+    type: object
+  customer.Customer:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  customer.GeneralResponse:
+    properties:
+      id:
+        type: string
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  customer.Response400:
+    properties:
+      message:
+        example: invalid request
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  customer.Response500:
+    properties:
+      message:
+        example: something went wrong
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  customer.ResponseData:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/customer.Customer'
+        type: array
+      limit:
+        type: integer
+      message:
+        type: string
+      page:
+        type: integer
+      success:
+        type: boolean
+      totalPage:
+        type: integer
+    type: object
+  customer.ResponseDetail:
+    properties:
+      data:
+        $ref: '#/definitions/customer.Customer'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  customer.UpdateRequest:
+    properties:
+      name:
+        type: string
+    type: object
+  login.CreateRequest:
+    properties:
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  login.GeneralResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  login.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  login.Response400:
+    properties:
+      message:
+        example: invalid request
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  login.Response500:
+    properties:
+      message:
+        example: something went wrong
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  login.ResponseData:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/login.User'
+        type: array
+      limit:
+        type: integer
+      message:
+        type: string
+      page:
+        type: integer
+      success:
+        type: boolean
+      totalPage:
+        type: integer
+    type: object
+  login.ResponseDetail:
+    properties:
+      data:
+        $ref: '#/definitions/login.User'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  login.ResponseLogin:
+    properties:
+      data:
+        properties:
+          token:
+            type: string
+        type: object
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  login.UpdateRequest:
+    properties:
+      customerId:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    type: object
+  login.User:
+    properties:
+      createdAt:
+        type: string
+      customerId:
+        type: string
+      role:
+        type: string
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
+  middleware.Response:
+    properties:
+      code:
+        example: 401
+        type: integer
+      message:
+        example: unauthorized
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  order.CreateRequest:
+    properties:
+      customerId:
+        type: string
+      name:
+        type: string
+      qty:
+        type: integer
+    type: object
+  order.GeneralResponse:
+    properties:
+      id:
+        type: string
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  order.Order:
+    properties:
+      createdAt:
+        type: string
+      customer_id:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      qty:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  order.Response400:
+    properties:
+      message:
+        example: invalid request
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  order.Response500:
+    properties:
+      message:
+        example: something went wrong
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  order.ResponseData:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/order.Order'
+        type: array
+      limit:
+        type: integer
+      message:
+        type: string
+      page:
+        type: integer
+      success:
+        type: boolean
+      totalPage:
+        type: integer
+    type: object
+  order.UpdateRequest:
+    properties:
+      customerId:
+        type: string
+      name:
+        type: string
+      qty:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /api/customer:
+    get:
+      description: Get All Customers
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: name of some customer
+        in: query
+        name: keyword
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.ResponseData'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/customer.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/customer.Response500'
+      summary: Get All Customers
+    post:
+      consumes:
+      - application/json
+      description: Create Some New Customer
+      parameters:
+      - description: Sample Create request payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/customer.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.GeneralResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/customer.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/customer.Response500'
+      security:
+      - jwt: []
+      summary: Create Customer
+  /api/customer/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Some Customer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.GeneralResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/customer.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/customer.Response500'
+      security:
+      - jwt: []
+      summary: Delete Customer
+    get:
+      description: Customer By Id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.ResponseDetail'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/customer.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/customer.Response500'
+      summary: Get Customer By Id
+    put:
+      consumes:
+      - application/json
+      description: Update Some Customer
+      parameters:
+      - description: Sample Update request payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/customer.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.GeneralResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/customer.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/customer.Response500'
+      security:
+      - jwt: []
+      summary: Update Customer
+  /api/login:
+    post:
+      consumes:
+      - application/json
+      description: Handle Login of Some Users
+      parameters:
+      - description: Sample Login request payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/login.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/login.ResponseLogin'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/login.GeneralResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/login.GeneralResponse'
+      summary: Login
+  /api/order:
+    get:
+      description: Get All Orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order.ResponseData'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/order.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/order.Response500'
+      summary: Get All Orders
+    post:
+      consumes:
+      - application/json
+      description: Create Some New Orders
+      parameters:
+      - description: Sample Create request payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/order.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order.GeneralResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/order.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/order.Response500'
+      security:
+      - jwt: []
+      summary: Create Order
+  /api/order/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Some Orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order.GeneralResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/order.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/order.Response500'
+      security:
+      - jwt: []
+      summary: Delete Order
+    get:
+      description: Get Order By Id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order.ResponseData'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/order.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/order.Response500'
+      summary: Get Order By Id
+    put:
+      consumes:
+      - application/json
+      description: Update Some Orders
+      parameters:
+      - description: Sample Update request payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/order.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/order.GeneralResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/order.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/order.Response500'
+      security:
+      - jwt: []
+      summary: Update Order
+  /api/register:
+    post:
+      consumes:
+      - application/json
+      description: Create Some New Users
+      parameters:
+      - description: Sample Create request payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/login.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/login.GeneralResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/login.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/login.Response500'
+      security:
+      - jwt: []
+      summary: Register
+  /api/user:
+    get:
+      description: Get All Users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/login.ResponseData'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/login.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/login.Response500'
+      summary: Get All Users
+    post:
+      consumes:
+      - application/json
+      description: Create Some New Users
+      parameters:
+      - description: Sample Create request payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/login.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/login.GeneralResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/login.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/login.Response500'
+      security:
+      - jwt: []
+      summary: Create User
+  /api/user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Some Users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/login.GeneralResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/login.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/login.Response500'
+      security:
+      - jwt: []
+      summary: Delete User
+    get:
+      description: Get User By Id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/login.ResponseDetail'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/login.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/login.Response500'
+      summary: Get User By Id
+    put:
+      consumes:
+      - application/json
+      description: Update Some Users
+      parameters:
+      - description: Sample Update request payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/login.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/login.GeneralResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/login.Response400'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/middleware.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/login.Response500'
+      security:
+      - jwt: []
+      summary: Update User
+swagger: "2.0"
